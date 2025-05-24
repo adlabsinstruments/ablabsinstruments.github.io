@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>Adlabs Instruments - Premier Laser Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0a0a0a;
+            --secondary-color: #1a1a1a;
+            --accent-color: #ff0066;
+            --laser-red: #ff3333;
+            --laser-green: #00ff66;
+            --laser-blue: #3366ff;
+            --text-light: #ffffff;
+            --text-gray: #cccccc;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: var(--primary-color);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-light);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.1) 0%, rgba(10, 10, 10, 1) 70%);
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 0 2rem;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #667eea 50%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--gradient-1);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out 0.4s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .laser-beam {
+            position: absolute;
+            width: 2px;
+            height: 200px;
+            background: linear-gradient(180deg, transparent, var(--laser-red), transparent);
+            animation: laserFloat 8s infinite ease-in-out;
+        }
+
+        .laser-beam:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .laser-beam:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            background: linear-gradient(180deg, transparent, var(--laser-green), transparent);
+            animation-delay: 2s;
+        }
+
+        .laser-beam:nth-child(3) {
+            top: 40%;
+            left: 80%;
+            background: linear-gradient(180deg, transparent, var(--laser-blue), transparent);
+            animation-delay: 4s;
+        }
+
+        /* Company Section */
+        .company-section {
+            padding: 6rem 0;
+            background: var(--secondary-color);
+            position: relative;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .company-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .company-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .company-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .company-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .company-card p {
+            color: var(--text-gray);
+            line-height: 1.8;
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 6rem 0;
+            background: var(--primary-color);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .product-category {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-3);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .product-category:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-category:hover {
+            transform: translateY(-5px);
+            border-color: rgba(67, 172, 254, 0.3);
+        }
+
+        .category-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .laser-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--laser-red);
+            animation: pulse 2s infinite;
+        }
+
+        .laser-dot.green { background: var(--laser-green); }
+        .laser-dot.blue { background: var(--laser-blue); }
+
+        .product-list {
+            list-style: none;
+        }
+
+        .product-list li {
+            padding: 0.8rem 0;
+            color: var(--text-gray);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-list li:hover {
+            color: var(--text-light);
+            padding-left: 1rem;
+        }
+
+        .product-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Applications Section */
+        .applications-section {
+            padding: 6rem 0;
+            background: var(--secondary-color);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 6rem 0;
+            background: var(--primary-color);
+        }
+
+        .contact-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 4rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .contact-info h3, .inquiry-form h3 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .contact-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateX(10px);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-card h4 {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .contact-name {
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-detail {
+            color: var(--text-gray);
+            margin-bottom: 0.3rem;
+            font-family: monospace;
+        }
+
+        .company-details {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .company-details h4 {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .company-details p {
+            color: var(--text-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Form Styles */
+        .contact-form {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(204, 204, 204, 0.6);
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group small {
+            color: var(--text-gray);
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: block;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn .btn-loader {
+            display: none;
+        }
+
+        .submit-btn.loading .btn-text {
+            display: none;
+        }
+
+        .submit-btn.loading .btn-loader {
+            display: inline;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, #00ff66, #00cc52);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+                /* Safety Documentation Link Styles */
+        .safety-docs-link {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .docs-link-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+        
+        .docs-link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            background: linear-gradient(135deg, #ff5252, #d32f2f);
+        }
+        
+        .docs-link-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .docs-link-btn:hover::before {
+            left: 100%;
+        }
+        
+        .docs-link-btn:active {
+            transform: translateY(0);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Contact Section */
+        @media (max-width: 968px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .contact-section {
+                padding: 4rem 0;
+            }
+            
+            .contact-form {
+                padding: 1.5rem;
+            }
+        }
+
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .application-card {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .application-card:hover {
+            transform: translateY(-10px);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        }
+
+        .application-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-color);
+            padding: 3rem 0 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-light);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes laserFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .company-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="adlabs.jpg" alt="Adlabs Instruments Logo" style="height: 50px;">
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#applications">Applications</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="floating-elements">
+            <div class="laser-beam"></div>
+            <div class="laser-beam"></div>
+            <div class="laser-beam"></div>
+        </div>
+        <div class="hero-content">
+            <h1>Advanced Laser Solutions</h1>
+            <p>Pioneering precision optics and laser technology for research, industry, and innovation since 2005</p>
+            <a href="#products" class="cta-button">Explore Our Products</a>
+        </div>
+    </section>
+
+    <!-- Company Section -->
+    <section id="about" class="company-section">
+        <div class="container">
+            <h2 class="section-title reveal">About Adlabs Instruments</h2>
+            <div class="company-grid">
+                <div class="company-card reveal">
+                    <h3>Our Mission</h3>
+                    <p>We are a premier manufacturer and supplier of high-quality laser solutions, scientific instruments, and optical components. With over 20 years of expertise, we've established ourselves as an innovative leader in the laser technology industry.</p>
+                </div>
+                <div class="company-card reveal">
+                    <h3>Our Vision</h3>
+                    <p>To become the leading provider of high-quality laser modules across all available wavelengths - UV, Visible, and Infrared - with various beam shapes including DOT, Line, and Cross Line generation systems.</p>
+                </div>
+                <div class="company-card reveal">
+                    <h3>Our Commitment</h3>
+                    <p>Focusing on the high-end laser market, we understand that staying ahead requires exceptional quality and outstanding customer service. We're devoted to being an innovative and reliable supplier.</p> 
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <div class="container">
+            <h2 class="section-title reveal">Product Catalog</h2>
+            <div class="products-grid">
+                <div class="product-category reveal">
+                    <h3 class="category-title">
+                        <span class="laser-dot"></span>
+                        Helium Neon Lasers
+                    </h3>
+                    <ul class="product-list">
+                        <li>Red He-Ne Laser (632.8nm)</li>
+                        <li>Green He-Ne Laser (543nm)</li>
+                        <li>Yellow He-Ne Laser (594nm)</li>
+                    </ul>
+                </div>
+
+                <div class="product-category reveal">
+                    <h3 class="category-title">
+                        <span class="laser-dot blue"></span>
+                        Laser Diode Modules
+                    </h3>
+                    <ul class="product-list">
+                        <li>UV/Blue Laser Diodes (375nm, 473nm, 450nm, 405nm)</li>
+                        <li>Green Laser Diodes (520nm, 532nm)</li>
+                        <li>Red Laser Diodes (635nm, 650nm)</li>
+                        <li>IR Laser Diodes (780nm, 808nm, 850nm, 905nm, 980nm, 1064nm)</li>
+                        <li>DPSS Lasers (Multiple wavelengths)</li>
+                        <li>Fiber Coupled Lasers</li>
+                        <li>SLM Lasers</li>
+                    </ul>
+                </div>
+
+                <div class="product-category reveal">
+                    <h3 class="category-title">
+                        <span class="laser-dot green"></span>
+                        Line Generating Lasers
+                    </h3>
+                    <ul class="product-list">
+                        <li>RED Line Laser Module</li>
+                        <li>Green Line Laser Module</li>
+                        <li>Blue Line Laser Module</li>
+                        <li>IR Line Laser Module</li>
+                    </ul>
+                </div>
+
+                <div class="product-category reveal">
+                    <h3 class="category-title">
+                        <span class="laser-dot"></span>
+                        Cross Line Lasers
+                    </h3>
+                    <ul class="product-list">
+                        <li>RED Cross Line Laser Module</li>
+                        <li>Green Cross Line Laser Module</li>
+                        <li>Blue Cross Line Laser Module</li>
+                        <li>IR Cross Line Laser Module</li>
+                    </ul>
+                </div>
+
+                <div class="product-category reveal">
+                    <h3 class="category-title">
+                        <span class="laser-dot blue"></span>
+                        Laser Safety Equipment
+                    </h3>
+                    <ul class="product-list">
+                        <li>Laser Safety Goggles</li>
+                        <li>Laser Safety Windows</li>
+                        <li>Laser Full Face Protection Helmets</li>
+                    </ul>
+
+                    <div class="safety-docs-link">
+                        <a href="https://docs.google.com/document/d/1uJ34BxchihPINzrAvQgsN-md1brc3jkz/view" target="_blank" rel="noopener noreferrer" class="docs-link-btn">
+                            📋 View Complete Documentation
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-category reveal">
+                    <h3 class="category-title">
+                        <span class="laser-dot green"></span>
+                        Measurement & Components
+                    </h3>
+                    <ul class="product-list">
+                        <li>Laser Power Meters</li>
+                        <li>IR Beam Viewing Cards</li>
+                        <li>Laser Beam Expanders</li>
+                        <li>Variable Attenuators</li>
+                        <li>Opto-Mechanical Mounts</li>
+                        <li>Optical Tables & Breadboards</li>
+                        <li>XYZ Translation Stages</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section id="applications" class="applications-section">
+        <div class="container">
+            <h2 class="section-title reveal">Applications & Industries</h2>
+            <div class="applications-grid">
+                <div class="application-card reveal">
+                    <div class="application-icon">🔬</div>
+                    <h3>Research Centers</h3>
+                    <p>DRDO Research Centers and advanced laboratory applications</p>
+                </div>
+                <div class="application-card reveal">
+                    <div class="application-icon">🎓</div>
+                    <h3>Educational Institutions</h3>
+                    <p>IITs, NITs, Engineering Colleges & Universities</p>
+                </div>
+                <div class="application-card reveal">
+                    <div class="application-icon">🏭</div>
+                    <h3>Industrial Applications</h3>
+                    <p>Laser industries and manufacturing processes</p>
+                </div>
+                <div class="application-card reveal">
+                    <div class="application-icon">🏥</div>
+                    <h3>Medical Applications</h3>
+                    <p>Medical colleges and healthcare institutions</p>
+                </div>
+                <div class="application-card reveal">
+                    <div class="application-icon">🧪</div>
+                    <h3>Laboratory Research</h3>
+                    <p>University laboratories and pharmacy colleges</p>
+                </div>
+                <div class="application-card reveal">
+                    <div class="application-icon">🌍</div>
+                    <h3>Global Reach</h3>
+                    <p>Industries located across India and abroad</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title reveal">Get In Touch</h2>
+            <p class="contact-subtitle reveal">Ready to explore our laser solutions? Contact our experts or place an inquiry today.</p>
+            
+            <div class="contact-grid">
+                <!-- Contact Information -->
+                <div class="contact-info reveal">
+                    <h3>Contact Information</h3>
+                    
+                    <div class="contact-cards">
+                        <div class="contact-card">
+                            <div class="contact-icon">👨‍💼</div>
+                            <h4>Contact Person 1</h4>
+                            <p class="contact-name">Name: Jaiveer Singh (Proprietor)</p>
+                            <p class="contact-detail">📧 <a href="adlabs.instruments@gmail.com">adlabs.instruments@gmail.com</a></p>
+                            <p class="contact-detail">📞 9818622026 (or) 9313088412</p>
+                        </div>
+                        
+                        <!--<div class="contact-card">
+                            <div class="contact-icon">👩‍💼</div>
+                            <h4>Contact Person 2</h4>
+                            <p class="contact-name">Name: [Enter Name 2]</p>
+                            <p class="contact-detail">📧 [Enter Email 2]</p>
+                            <p class="contact-detail">📞 [Enter Phone 2]</p>
+                        </div>-->
+                    </div>
+                    
+                    <div class="company-details">
+                        <h4>Company Details</h4>
+                        <p><strong>Adlabs Instruments</strong></p>
+                        <p>Advanced Laboratories & Scientific Instruments</p>
+                        <p>Registered Office: B-21, Bhagwati Garden , Uttam Nagar, New Delhi-110059</p>
+                        <p>Branch Office:  1576, Naveen Shahdara, Near Durga Bhawan, Shahdara, Delhi - 110032</p>
+                        <p>Established: 2005</p>
+                        <p>Experience: 20+ Years in Laser Technology</p>
+                    </div>
+                </div>
+
+                <!-- Inquiry Form -->
+                <div class="inquiry-form reveal">
+                    <h3>Product Inquiry & Order Form</h3>
+                    <form class="contact-form" id="inquiryForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="organization">Organization/Institution</label>
+                                <input type="text" id="organization" name="organization">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inquiry-type">Inquiry Type *</label>
+                            <select id="inquiry-type" name="inquiry-type" required>
+                                <option value="">Select Inquiry Type</option>
+                                <option value="product-inquiry">Product Inquiry</option>
+                                <option value="quotation">Request Quotation</option>
+                                <option value="bulk-order">Bulk Order</option>
+                                <option value="custom-solution">Custom Solution</option>
+                                <option value="technical-support">Technical Support</option>
+                                <option value="partnership">Partnership/Dealership</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="products">Products of Interest</label>
+                            <select id="products" name="products" multiple>
+                                <option value="he-ne-lasers">Helium Neon Lasers</option>
+                                <option value="laser-diodes">Laser Diode Modules</option>
+                                <option value="line-lasers">Line Generating Lasers</option>
+                                <option value="cross-lasers">Cross Line Lasers</option>
+                                <option value="safety-equipment">Laser Safety Equipment</option>
+                                <option value="measurement-tools">Measurement & Components</option>
+                                <option value="fiber-optics">Fiber Optic Products</option>
+                                <option value="custom-wavelength">Custom Wavelength Solutions</option>
+                            </select>
+                            <small>Hold Ctrl/Cmd to select multiple products</small>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="wavelength">Required Wavelength (if specific)</label>
+                                <input type="text" id="wavelength" name="wavelength" placeholder="e.g., 532nm, 650nm">
+                            </div>
+                            <div class="form-group">
+                                <label for="power">Required Power (if specific)</label>
+                                <input type="text" id="power" name="power" placeholder="e.g., 5mW, 100mW">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity">Estimated Quantity</label>
+                            <input type="text" id="quantity" name="quantity" placeholder="e.g., 1 unit, 10 pieces, bulk order">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="application">Application/Use Case</label>
+                            <textarea id="application" name="application" rows="3" placeholder="Describe how you plan to use the laser products..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Additional Requirements/Message *</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Please provide detailed specifications, timeline, budget range, or any other requirements..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="timeline">Required Timeline</label>
+                            <select id="timeline" name="timeline">
+                                <option value="">Select Timeline</option>
+                                <option value="urgent">Urgent (Within 1 week)</option>
+                                <option value="1-2-weeks">1-2 Weeks</option>
+                                <option value="1-month">Within 1 Month</option>
+                                <option value="2-3-months">2-3 Months</option>
+                                <option value="flexible">Flexible Timeline</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <span class="btn-text">Send Inquiry</span>
+                            <span class="btn-loader">Sending...</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#products">Products</a>
+                <a href="#applications">Applications</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <p>&copy; 2025 Adlabs Instruments. Advanced Laboratories & Scientific Instruments.</p>
+            <p>Premier manufacturer of laser solutions since 2005</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background change on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(10, 10, 10, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(10, 10, 10, 0.95)';
+            }
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add interactive hover effects to product items
+        document.querySelectorAll('.product-list li').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.background = 'rgba(102, 126, 234, 0.1)';
+                this.style.borderRadius = '5px';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.background = 'transparent';
+                this.style.borderRadius = '0';
+            });
+        });
+
+        // Dynamic laser beam colors
+        const laserBeams = document.querySelectorAll('.laser-beam');
+        const colors = ['var(--laser-red)', 'var(--laser-green)', 'var(--laser-blue)'];
+        
+        setInterval(() => {
+            laserBeams.forEach((beam, index) => {
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                beam.style.background = `linear-gradient(180deg, transparent, ${randomColor}, transparent)`;
+            });
+        }, 3000);
+
+        // Contact Form Handling
+        document.getElementById('inquiryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.submit-btn');
+            submitBtn.classList.add('loading');
+            
+            // Simulate form submission (replace with actual form handling)
+            setTimeout(() => {
+                submitBtn.classList.remove('loading');
+                
+                // Show success message
+                let successMsg = document.querySelector('.success-message');
+                if (!successMsg) {
+                    successMsg = document.createElement('div');
+                    successMsg.className = 'success-message';
+                    successMsg.innerHTML = `
+                        <strong>✅ Inquiry Sent Successfully!</strong><br>
+                        Thank you for your interest. Our team will contact you within 24 hours with detailed information and pricing.
+                    `;
+                    this.appendChild(successMsg);
+                }
+                successMsg.classList.add('show');
+                
+                // Reset form
+                this.reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMsg.classList.remove('show');
+                }, 5000);
+                
+            }, 2000);
+        });
+
+        // Form validation enhancements
+        const requiredFields = document.querySelectorAll('input[required], select[required], textarea[required]');
+        requiredFields.forEach(field => {
+            field.addEventListener('blur', function() {
+                if (!this.value.trim()) {
+                    this.style.borderColor = 'rgba(255, 51, 51, 0.5)';
+                } else {
+                    this.style.borderColor = 'rgba(102, 126, 234, 0.5)';
+                }
+            });
+            
+            field.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.style.borderColor = 'rgba(102, 126, 234, 0.5)';
+                }
+            });
+        });
+
+        // Email validation
+        const emailField = document.getElementById('email');
+        emailField.addEventListener('blur', function() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (this.value && !emailRegex.test(this.value)) {
+                this.style.borderColor = 'rgba(255, 51, 51, 0.5)';
+            } else if (this.value) {
+                this.style.borderColor = 'rgba(0, 255, 102, 0.5)';
+            }
+        });
+    </script>
+</body>
+</html>
